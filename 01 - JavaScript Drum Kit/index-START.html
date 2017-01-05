@@ -59,6 +59,29 @@
 
 <script>
 
+  function playSound(e) {
+    // const audio = document.querySelector('audio[data-key="${e.keyCode}"]'); this didn't work and puts out null 
+    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`); //get the audio element
+    if (!audio) return; //stops the function from running all together
+    audio.currentTime = 0; //this will rewind the audio to start
+    audio.play();
+
+    const key = document.querySelector(`.key[data-key="${e.keyCode}"]`); // gets the element with .key class
+    key.classList.add("playing");
+  }
+
+  function removeTransition(e) {
+    if (e.propertyName !== "transform") return; //skip if it's not tranformed
+    this.classList.remove("playing");
+    // console.log(this); //this will log all the things that tranformed for eg box shadow, border and the also the transformed has finished (which is in the propertyName)
+  }
+
+  window.addEventListener('keydown', playSound); //evenListener to play the sound
+
+  const keys = document.querySelectorAll('.key'); //it grabs the node list (which is the list an host object)
+  console.log(keys);
+  keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+
 </script>
 
 
